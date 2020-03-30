@@ -1,12 +1,12 @@
 from service.app_factory import GithubOAuthApp, FacebookOAuthApp
 
-
+# Dictionary mapping the host server name to the OAuthApp
 factorymap = {
     'github' : GithubOAuthApp,
     'facebook' : FacebookOAuthApp,
 }
 
-# Factory function to create the OAuth App
+# Simple Factory function to create the OAuth App. Can be enhanced to use a Factory Pattern
 def getOAuthApp(hostName, logger):
     cls = factorymap.get(hostName)
     if not cls:

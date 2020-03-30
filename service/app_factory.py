@@ -6,6 +6,7 @@ from service.oauthapp import OAuthApp
 from requests.exceptions import HTTPError
 
 
+# Singleton Github OAuth Flask App class. This class contains the underlying OAuthRemoteApp object
 @singleton
 class GithubOAuthApp(OAuthApp):
     appconfig = oauthserverconfig.get('github')
@@ -15,6 +16,10 @@ class GithubOAuthApp(OAuthApp):
         #self.createoauthapp()
 
     def createoauthapp(self):
+        """Create the OAuthRemoteApp object using the oauthlib library
+
+        :return: None
+        """
         try:
             oauth = OAuth()
             self.oauthapp = oauth.remote_app(
@@ -34,11 +39,21 @@ class GithubOAuthApp(OAuthApp):
             raise
 
     def _logmessage(self, message, exc):
+        """Helper method to log exceptions
+
+        :param message: Input string message
+        :param exc: Exception to be logged
+        :return: None
+        """
         if self.logger:
             self.logger.exception(
                 'handleoauthlogin : {} {}'.format(message, exc))
 
     def handleoauthlogin(self):
+        """Handle OAuth login into the host server(github, facebook, etc)
+
+        :return: str message
+        """
         try:
             resp = self.oauthapp.get('/user')
             return 'Logged in as id={} name={} '.format(resp.data.get('id'), resp.data.get('login'))
@@ -51,6 +66,11 @@ class GithubOAuthApp(OAuthApp):
 
 
     def createfork(self, request):
+        """Create a fork for repository name and owner contained in the request parameters
+
+        :param request: POST request parameters
+        :return: str message
+        """
         try:
             repoowner = request.args.get('repoowner')
             reponame = request.args.get('reponame')
@@ -59,7 +79,7 @@ class GithubOAuthApp(OAuthApp):
                 resp = self.oauthapp.post('/repos/' + repoowner + '/' + reponame + '/forks', content_type='application/json')
                 if resp.data and resp.data.get('full_name'):
                     self.logger.info(' createfork data {} '.format(resp.data.get('full_name')))
-                    return 'Created fork for repository from user {} '.format(resp.data.get('full_name'))
+                    return 'Created fork for repository with name {} '.format(resp.data.get('full_name'))
                 else:
                     self.logger.info('Incorrect Repository Name or Owner Name'.format(resp.data))
                     raise ValueError('Incorrect Repository Name or Owner Name'.format(resp.data))
@@ -69,10 +89,6 @@ class GithubOAuthApp(OAuthApp):
         except Exception as exc:
             self._logmessage('handleoauthlogin : Exception when getting User details from GitHub ', exc)
             raise
-
-
-    def handleoauthlogout(self, **kwargs):
-        pass
 
 
 @singleton

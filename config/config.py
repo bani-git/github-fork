@@ -6,8 +6,9 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite'
 SQLALCHEMY_DATABASE = 'SQLALCHEMY_DATABASE_URI'
 SQLALCHEMY_DATABASE_NOTIF = 'SQLALCHEMY_TRACK_MODIFICATIONS'
 
+# OAuth server config by host type
 oauthserverconfig = {
-    'github' : {
+    'github': {
         FlaskOAuthServerConfig.CLIENT_ID: 'b41fff3e49ea5b30ef6b',
         FlaskOAuthServerConfig.CLIENT_SECRET: 'bd0623dccf8e8d1f46c726f0ad334e8d87cc2bf3',
         FlaskOAuthServerConfig.REQUEST_TOKEN : {'scope': 'repo'},
@@ -17,10 +18,10 @@ oauthserverconfig = {
         FlaskOAuthServerConfig.ACCESS_TOKEN_URL: 'https://github.com/login/oauth/access_token',
         FlaskOAuthServerConfig.AUTH_URL: 'https://github.com/login/oauth/authorize'
     },
-    'facebook' : {
+    'facebook': {
 
     },
-    'twitter' : {
+    'twitter': {
 
     },
 }

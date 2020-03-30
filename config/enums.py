@@ -1,6 +1,6 @@
 from enum import Enum
 
-
+# Enumeration defining config parameters for the OAuth app
 class FlaskOAuthServerConfig(Enum):
     CLIENT_ID = 1
     CLIENT_SECRET = 2

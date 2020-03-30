@@ -25,19 +25,20 @@ lm.login_view = 'index'
 # Call Factory function to create OAuth App. This can be enhanced to take a custom hostname(github, facebook, etc.)
 oauthflaskapp = getOAuthApp('github', app.logger)
 
-
+# Handle main page view
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
+# Handle login page view
 @app.route('/login')
 def login():
     return oauthflaskapp.oauthapp.authorize(callback=url_for('github_authorized',
                                                              next=request.args.get('next') or request.referrer or None,
                                                              _external=True))
 
-
+# Handle the callback from the OAuth server(github, facebook, etc)
 @app.route('/login/authorized')
 @oauthflaskapp.oauthapp.authorized_handler
 def github_authorized(resp):
@@ -58,12 +59,12 @@ def github_authorized(resp):
         app.logger.exception('handleoauthlogin : {} {}'.format('Login Authorization failed', exc))
         return render_template('500.html')
 
-
+# Handle retrieving the access token on future HTTP requests
 @oauthflaskapp.oauthapp.tokengetter
 def get_oauth_token():
     return session.get('oauth_token')
 
-
+# Handle repository fork creation
 @app.route('/login/fork', methods=['POST', 'GET'])
 def create_fork():
     try:
@@ -78,6 +79,7 @@ def create_fork():
         app.logger.exception('create_fork : {} {}'.format('Fork creation failed', exc))
         return render_template('500.html')
 
+# Handle user logout
 @app.route('/logout')
 def logout():
     logout_user()
@@ -94,6 +96,7 @@ def internalerror(error):
     db.session.rollback()
     return render_template('500.html'), 500
 
+# User database table
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
