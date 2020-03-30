@@ -17,6 +17,7 @@ This will prompt a Github login
 Example : https://intense-basin-56365.herokuapp.com/login/fork?repoowner=octocat&reponame=Spoon-Knife
 
 owner = Owner of the repository being forked
+
 name = Name of the public repository being forked
 
 A POST request handler in the webservice was used to handle creation of the fork.
