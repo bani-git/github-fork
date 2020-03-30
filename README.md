@@ -4,7 +4,7 @@ This project can be extended to support other Authorization servers such as Face
 
 **Getting started:**
 
-app.py and app_factory.py contain the core functionality for this Python Flask App
+app.py and service.app_factory.py contain the core functionality for this Python Flask App
 
 **Deployment:**
 The web service is deployed and hosted via Heroku and hosted at this location:
