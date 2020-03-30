@@ -18,3 +18,5 @@ Example : https://intense-basin-56365.herokuapp.com/login/fork?repoowner=octocat
 
 _repoowner_ = Owner of the repository being forked
 _reponame_ = Name of the public repository being forked
+
+A POST request handler in the webservice was used to handle creation of the fork.
