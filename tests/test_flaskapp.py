@@ -1,5 +1,5 @@
 import unittest
-from flaskapp import flaskapp, db
+from app import flaskapp, db
 import os
 from unittest.mock import Mock, patch
 
