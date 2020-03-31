@@ -11,7 +11,7 @@ oauthserverconfig = {
     'github': {
         FlaskOAuthServerConfig.CLIENT_ID: 'b41fff3e49ea5b30ef6b',
         FlaskOAuthServerConfig.CLIENT_SECRET: 'bd0623dccf8e8d1f46c726f0ad334e8d87cc2bf3',
-        FlaskOAuthServerConfig.REQUEST_TOKEN : {'scope': 'repo'},
+        FlaskOAuthServerConfig.REQUEST_TOKEN: {'scope': 'public_repo'},
         FlaskOAuthServerConfig.BASE_URL:'https://api.github.com/api/v3',
         FlaskOAuthServerConfig.REQUEST_TOKEN_URL: None,
         FlaskOAuthServerConfig.ACCESS_TOKEN_METHOD: 'POST',
