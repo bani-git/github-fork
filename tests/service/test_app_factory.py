@@ -5,15 +5,15 @@ from config.enums import FlaskOAuthServerConfig
 from unittest.mock import Mock, patch
 import unittest
 import logging
-from service.utils import getOAuthApp
-
+from service.utils import get_oauth_app
+from http import HTTPStatus
 
 class GithubOAuthAppTest(TestCase):
     def setUp(self):
-        self.githubapp = getOAuthApp('github', logging.getLogger())
+        self.githubapp = get_oauth_app('github', logging.getLogger())
 
     def test_createoauthappSuccess(self):
-        self.githubapp.createoauthapp()
+        self.githubapp.create_oauth_app()
         self.assertIsInstance(self.githubapp.oauthapp, OAuthRemoteApp)
 
     def test_appconfig(self):
@@ -30,19 +30,17 @@ class GithubOAuthAppTest(TestCase):
         data = {'id': '1234', 'login': 'test login'}
         mock_resp = Mock()
         mock_resp.data = data
+        mock_resp.status = HTTPStatus.OK
         mock_get.return_value = mock_resp
-        returnmsg = self.githubapp.handleoauthlogin()
-        self.assertEqual(returnmsg, 'Logged in as id={} name={}'.format('1234', 'test login '))
+
+        resp_status = self.githubapp.handle_oauth_login()
+        self.assertEqual(resp_status, HTTPStatus.OK)
 
     @patch('flask_oauthlib.client.OAuthRemoteApp.get')
     def test_handleoauthloginFailure(self, mock_get):
-        json_data = {'id': '1234', 'name': 'test login'}
-        mock_resp = requests.models.Response()
-        mock_resp.data = json_data
-        mock_resp.status_code = 404
-        mock_get.return_value = mock_resp
-        with self.assertRaises(requests.exceptions.HTTPError) as err_msg:
-            self.githubapp.handleoauthlogin()
+        mock_resp = Exception()
+        with self.assertRaises(Exception) as err_msg:
+            resp_status = self.githubapp.handle_oauth_login()
             mock_resp.raise_for_status()
 
     @patch('flask_oauthlib.client.OAuthRemoteApp.post')
@@ -50,11 +48,12 @@ class GithubOAuthAppTest(TestCase):
         data = {'id': '1234', 'login': 'test login', 'full_name': 'full name'}
         mock_resp = Mock()
         mock_resp.data = data
+        mock_resp.status = HTTPStatus.ACCEPTED
         mock_get.return_value = mock_resp
         request = Mock()
         request.args = {'repoowner' : 'test owner', 'reponame' : 'repo name'}
-        returnmsg = self.githubapp.createfork(request)
-        self.assertEqual(returnmsg, 'Created fork for repository with name {} '.format('full name'))
+        resp_status = self.githubapp.create_fork(request)
+        self.assertEqual(resp_status, HTTPStatus.ACCEPTED)
 
     @patch('flask_oauthlib.client.OAuthRemoteApp.post')
     def test_createforkFailure(self, mock_get):
@@ -65,7 +64,7 @@ class GithubOAuthAppTest(TestCase):
         request = Mock()
         request.args = {'repoowner': 'test owner', 'reponame' : 'repo name'}
         with self.assertRaises(ValueError) as err_msg:
-            self.githubapp.createfork(request)
+            self.githubapp.create_fork(request)
             mock_resp.raise_for_status()
 
 if __name__ == '__main__':

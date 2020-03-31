@@ -4,7 +4,7 @@ import abc
 class OAuthApp(abc.ABC):
 
     @abc.abstractmethod
-    def handleoauthlogin(self, **kwargs):
+    def handle_oauth_login(self, **kwargs):
         pass
 
 

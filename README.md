@@ -13,8 +13,8 @@ https://intense-basin-56365.herokuapp.com/
 **Instructions to run in a web browser:**
 1. Run https://intense-basin-56365.herokuapp.com/login to trigger Github Authorization.
 This will prompt a Github login
-2. Run https://intense-basin-56365.herokuapp.com/login/fork?repoowner=owner&reponame=name to create a fork.
-Example : https://intense-basin-56365.herokuapp.com/login/fork?repoowner=octocat&reponame=Spoon-Knife
+2. Run https://intense-basin-56365.herokuapp.com/fork?repoowner=owner&reponame=name to create a fork.
+Example : https://intense-basin-56365.herokuapp.com/fork?repoowner=octocat&reponame=Spoon-Knife
 
 owner = Owner of the repository being forked
 

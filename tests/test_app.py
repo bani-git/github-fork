@@ -1,18 +1,8 @@
-import unittest
 from app import app, db
-import os
-from unittest.mock import Mock, patch
-from flask_oauthlib.client import OAuthRemoteApp
-
-from unittest import TestCase
-
-import requests
-from flask_oauthlib.client import OAuthRemoteApp
-from config.enums import FlaskOAuthServerConfig
 from unittest.mock import Mock, patch
 import unittest
 import logging
-from service.utils import getOAuthApp
+from service.utils import get_oauth_app
 TEST_DB = 'test.db'
 
 
@@ -20,18 +10,15 @@ class AppTest(unittest.TestCase):
 
     # executed prior to each test
     def setUp(self):
-        self.app = getOAuthApp('github', logging.getLogger())
+        self.app = get_oauth_app('github', logging.getLogger())
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
         app.config['DEBUG'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + TEST_DB
-        #self.app = app.test_client()
         # propagate the exceptions to the test client
         self.app.testing = True
         db.drop_all()
         db.create_all()
-
-        self.assertEqual(app.debug, False)
 
     @patch('flask_oauthlib.client.OAuthRemoteApp.get')
     def test_main_page(self, mock_get):
